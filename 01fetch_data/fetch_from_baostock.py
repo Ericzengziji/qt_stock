@@ -14,23 +14,19 @@ lg = bs.login()
 print('login respond error_code:'+lg.error_code)
 print('login respond  error_msg:'+lg.error_msg)
 
-rs = bs.query_history_k_data_plus("sh.600000",
+rs = bs.query_history_k_data_plus("sh.600036",
     "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,peTTM,pbMRQ,psTTM,pcfNcfTTM,isST",
-    start_date='2017-01-01', end_date='2017-01-31',
+    start_date='2023-06-21', end_date='2023-06-21',
     frequency="d", adjustflag="3")
 print('query_history_k_data_plus respond error_code:'+rs.error_code)
 print('query_history_k_data_plus respond  error_msg:'+rs.error_msg)
 
-#### 打印结果集 ####
+
 data_list = []
 while (rs.error_code == '0') & rs.next():
     # 获取一条记录，将记录合并在一起
     data_list.append(rs.get_row_data())
     print(data_list[-1])
 result = pd.DataFrame(data_list, columns=rs.fields)
-
-# result.to_csv("D:/history_k_data.csv", encoding="gbk", index=False)
 print(result)
-
-#### 登出系统 ####
 bs.logout()
