@@ -86,7 +86,14 @@ class GetStockData(object):
             result.insert(loc=1, column='time', value='093500')
         else:
             result['time'] = result['time'].apply(lambda x:x[8:14])
-        print(result)
+
+        # 更新数据类型
+        for col in ["open","high","low","close","amount"]:
+            if col in result.columns:
+                result[col] = result[col].astype("float")
+        for col in ["volume"]:
+            if col in result.columns:
+                result[col] = result[col].astype("int64")
 
         return result
 
@@ -136,7 +143,6 @@ class GetStockData(object):
     #     send_sql(sql=insert_sql, get_or_not=0)
 
 
-
 if __name__ == '__main__':
     test = GetStockData(stock_code='600036')
-    test.get_history_data_baostock(start_date='2023-07-26', end_date='2023-07-26', frequency="5")
+    output_data = test.get_history_data_baostock(start_date='2023-07-26', end_date='2023-07-26', frequency="5")
